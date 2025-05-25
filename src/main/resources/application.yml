@@ -1,6 +1,6 @@
 spring:
   application:
-    name: lilPertty
+    name: lilPertty 
   datasource:
     url: jdbc:mysql://localhost:3306/lilprettydb  # 데이터베이스 URL
     username: root  # 데이터베이스 사용자 이름
