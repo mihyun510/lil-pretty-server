@@ -28,6 +28,10 @@ spring:
         format_sql: true  # SQL 쿼리를 포맷하여 출력
         jdbc:
           time_zone: UTC  # JDBC의 시간대 설정
+					
+  session:
+	  store-type: none
+							
 jwt:
   secret: GkLf28hBrtykPdzKmMCiO5w+QwKctBQzql8rV0BMy4s=
 
