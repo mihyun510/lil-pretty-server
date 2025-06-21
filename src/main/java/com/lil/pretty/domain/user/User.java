@@ -1,5 +1,7 @@
 package com.lil.pretty.domain.user;
 
+import com.lil.pretty.domain.common.model.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends BaseEntity{
     @Id
     @Column(name = "us_id", length = 50)
     private String usId;
@@ -28,5 +30,5 @@ public class User {
 
     @Column(name = "us_phone", nullable = false, length = 11)
     private String usPhone;
-
+    
 }
