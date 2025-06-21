@@ -53,11 +53,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+    	
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsId(), authRequest.getUsPw())
             );
-
+            
             UserDetails userDetails = authDetailService.loadUserByUsername(authRequest.getUsId());
             User user = ((AuthDetail) userDetails).getUser(); // 원래 User 객체 가져오기
             String token = jwtAuthenticationService.generateToken(user.getUsId(), user.getUsRole());

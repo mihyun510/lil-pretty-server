@@ -10,5 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends CrudRepository<User, String> {
 	Optional<User> findByUsNm(String usNm);
 	Optional<User> findByUsId(String usId);
+	
 
 }

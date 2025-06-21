@@ -59,8 +59,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         String role = jwtAuthenticationService.extractRole(jwt); // role 꺼내오기
 
         //String role = claims.get("role", String.class);
-        System.out.println("Extracted Role: " + role);
-        System.out.println("Extracted usId: " + usId);
+        log.info("Extracted Role: " + role);
+        log.info("Extracted usId: " + usId);
 
         //username 꺼내와서 jwt와 user token 비교
         if (usId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
