@@ -1,6 +1,6 @@
 package com.lil.pretty.config.security.auth.dto;
 
-import com.lil.pretty.domain.user.User;
+import com.lil.pretty.domain.user.model.User;
 
 import lombok.Data;
 

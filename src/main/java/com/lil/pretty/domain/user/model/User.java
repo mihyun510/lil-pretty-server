@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.user;
+package com.lil.pretty.domain.user.model;
 
 import com.lil.pretty.domain.common.model.BaseEntity;
 

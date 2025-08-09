@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.user;
+package com.lil.pretty.domain.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lil.pretty.config.security.auth.AuthDetailService;
 import com.lil.pretty.config.security.jwt.JwtTokenProvider;
+import com.lil.pretty.domain.user.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;

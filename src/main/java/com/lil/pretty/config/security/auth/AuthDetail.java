@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.lil.pretty.domain.user.User;
+import com.lil.pretty.domain.user.model.User;
 
 
 public class AuthDetail implements UserDetails {
