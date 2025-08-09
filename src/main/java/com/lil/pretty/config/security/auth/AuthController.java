@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lil.pretty.config.security.auth.dto.AuthRequest;
 import com.lil.pretty.config.security.auth.dto.AuthResponse;
 import com.lil.pretty.config.security.jwt.JwtTokenProvider;
-import com.lil.pretty.domain.user.User;
-import com.lil.pretty.domain.user.UserService;
+import com.lil.pretty.domain.user.model.User;
+import com.lil.pretty.domain.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
