@@ -19,9 +19,13 @@ import lombok.RequiredArgsConstructor;
 public class DietDetailService {
 
 	private final MealDtlRepository mealDtlRepository;
-	
+	private final MealFavoriteRepository mealFavoriteRepository;
 	
     public List<Map<String,Object>> getMealDtlItems(String mmCd) {
         return mealDtlRepository.findMealDtlItems(mmCd);
+    }
+    
+    public List<Map<String,Object>> getMealFavoriteItems(String userId) {
+        return mealFavoriteRepository.findMealFavoriteItems(userId);
     }
 }    

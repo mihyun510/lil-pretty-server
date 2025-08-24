@@ -30,6 +30,15 @@ public interface MealFavoriteRepository extends CrudRepository<MealFavorite, Str
     int deleteMealFavorite(@Param("mmCd") String mmCd, @Param("userId") String userId);
     
     
+    @Query(value = "SELECT mf.mm_cd\n"
+    		+ "	  , mf.mf_cd\n"
+    		+ "	  , mm.mm_img\n"
+    		+ "	  , mm.mm_title\n"
+    		+ "FROM meal_mst mm JOIN meal_favorite mf \n"
+    		+ "ON mm.mm_cd = mf.mm_cd \n"
+    		+ "WHERE mf.in_user = :userId;", nativeQuery = true)
+    List<Map<String,Object>> findMealFavoriteItems(@Param("userId") String userId);
+    
 }
 
 
