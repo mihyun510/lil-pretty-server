@@ -42,4 +42,17 @@ public class DietDetailController {
         }
     }
     
+    @PostMapping("/getMealFavoriteItems")
+    public ResponseEntity<CommonResponse> getMealFavoriteItems(@AuthenticationPrincipal(expression = "username") String userId) {
+        try {
+        	List<Map<String,Object>> items = dietDetailService.getMealFavoriteItems(userId);
+        	
+            return ResponseEntity.ok(new CommonResponse(true, items, "Success"));
+            
+        } catch (Exception e) {
+        	return ResponseEntity.status(401).body(new CommonResponse(false, null,"Failed"));
+        }
+    }
+    
+    
 }

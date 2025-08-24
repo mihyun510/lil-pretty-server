@@ -48,20 +48,13 @@ public class DietMasterController {
         	
         	item = dietMasterService.getMealFavoriteItem(mmCd, userId);
         	
-        	log.info("item size:::"+item.size());
-        	
         	int result = 0;
-        	//기존에 없 > insert
+        	//기존에 없음  > insert
         	if(item.size()==0) {
-        		log.info("here1");
         		result = dietMasterService.saveMealFavorite(mmCd, userId);
         	} else {//기존에 존재 > delete
-        		
-        		log.info("here2");
         		result = dietMasterService.deleteMealFavorite(mmCd, userId);
         	}
-        	
-        	log.info("here3");
         	
         	item = dietMasterService.getMealsItem(mmCd, userId);
             return ResponseEntity.ok(new CommonResponse(true, item, "Success"));
