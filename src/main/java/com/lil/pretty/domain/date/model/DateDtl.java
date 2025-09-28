@@ -25,5 +25,8 @@ public class DateDtl {
 	
 	@Column(name="dd_desc", length=1000)
 	private String ddDesc;
+	
+	@Column(name="dd_budget", nullable = false)
+	private Integer ddBudget;
 
 }
