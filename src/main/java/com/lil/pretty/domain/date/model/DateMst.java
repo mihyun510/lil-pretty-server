@@ -20,7 +20,7 @@ public class DateMst {
 	@Column(name = "dm_category", length=20, nullable = false)
 	private String dmCategory;
 	
-	@Column(name = "dm_img", length=500, nullable = false)
+	@Column(name = "dm_img", length=256, nullable = false)
 	private String dmImgUrl;
 	
 	@Column(name = "dm_desc", length=1000)

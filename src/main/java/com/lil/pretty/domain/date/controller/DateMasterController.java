@@ -2,13 +2,14 @@ package com.lil.pretty.domain.date.controller;
 
 import java.util.List;
 import java.util.Map;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lil.pretty.domain.date.dto.MstDto;
 import com.lil.pretty.domain.date.service.DateMasterService;
 import com.lil.pretty.domain.diet.controller.DietMasterController;
 import com.lil.pretty.domain.diet.service.DietMasterService;
@@ -23,9 +24,9 @@ public class DateMasterController {
 	private final DateMasterService dateMasterService;
 	
 	@PostMapping("/dateItems")
-	public ResponseEntity<CommonResponse> getMstItems(){
+	public ResponseEntity<CommonResponse> getMstItems(@RequestBody MstDto request){
 		try {
-			List<Map<String,Object>>items = dateMasterService.getDateItems();
+			List<Map<String,Object>>items = dateMasterService.getDateItems(request.getValue1(), request.getValue2());
 			
 			return ResponseEntity.ok(new CommonResponse (true,items,"Success"));
 		}catch(Exception e){

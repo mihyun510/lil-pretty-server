@@ -14,13 +14,13 @@ public class DateReivew {
 	@Column(name="user_id", length=10, nullable = false)
 	private String userId;
 	
-	@Column(name="dr_reviews", length=1000, nullable = false)
-	private String drReviews;
+	@Column(name="dr_views", nullable = false)
+	private Integer drViews;
 	
 	@Column(name="dr_star", nullable = false)
 	private Float drStar;
 	
-	@Column(name="dr_views", nullable = false)
-	private Integer drViews;
+	@Column(name="dr_content", length=1000,nullable = false)
+	private String drContent;
 
 }

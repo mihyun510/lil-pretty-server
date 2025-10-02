@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class DateMasterService {
 	private final DateMasterRepository dateMasterRepository;
 	
-	public List<Map<String,Object>> getDateItems(){
-		return dateMasterRepository.findDateMstItems();
+	public List<Map<String,Object>> getDateItems(int value1 , int value2){
+		return dateMasterRepository.findDateMstItems(value1,value2);
 	}
 }

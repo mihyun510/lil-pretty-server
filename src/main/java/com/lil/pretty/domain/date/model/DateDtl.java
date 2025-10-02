@@ -17,13 +17,18 @@ public class DateDtl {
 	@Column(name="dm_cd", length=10, nullable = false)
 	private String dmCd;
 	
-	@Column(name="dd_title", length=80, nullable = false)
+	@Column(name="dd_title", length=50, nullable = false)
 	private String ddTitle;
 	
-	@Column(name="dd_img", length=500, nullable = false)
+	@Column(name="dd_img", length=256, nullable = false)
 	private String ddImg;
 	
 	@Column(name="dd_desc", length=1000)
 	private String ddDesc;
-
+	
+	@Column(name="dd_price", nullable = false)
+	private Integer ddPrice;
+	
+	@Column(name="dd_location", length = 80 , nullable = false)
+	private String ddLocation;
 }
