@@ -20,7 +20,7 @@ public interface DateMasterRepository extends CrudRepository<DateMst, String> {
 	    		+ " FROM date_mst dm\n"
 	    		+ " INNER JOIN date_dtl dd\n"
 	    		+ " ON dm.dm_cd = dd.dm_cd \n"
-	    		+ " WHERE dd.dd_budget  BETWEEN :value1 AND :value2\n"
+	    		+ " WHERE dd.dd_price  BETWEEN :value1 AND :value2\n"
 	    		, nativeQuery = true)
 	    List<Map<String,Object>> findDateMstItems(@Param("value1")int value1, @Param("value2") int value2);
 }
