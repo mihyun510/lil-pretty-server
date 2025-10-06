@@ -26,7 +26,7 @@ public class DateMasterController {
 	@PostMapping("/dateItems")
 	public ResponseEntity<CommonResponse> getMstItems(@RequestBody MstDto request){
 		try {
-			List<Map<String,Object>>items = dateMasterService.getDateItems(request.getValue1(), request.getValue2());
+			List<Map<String,Object>>items = dateMasterService.getDateItems(request.getPriceMin(), request.getPriceMax());
 			
 			return ResponseEntity.ok(new CommonResponse (true,items,"Success"));
 		}catch(Exception e){

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "date_mst")
-public class DateMst {
+public class DateMst extends BaseEntity{
 	@Id
 	@Column(name = "dm_cd", length=10, nullable = false)
 	private String dmCd;
