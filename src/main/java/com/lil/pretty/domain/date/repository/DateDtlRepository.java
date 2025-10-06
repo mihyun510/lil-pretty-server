@@ -7,9 +7,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.lil.pretty.domain.date.model.DateDtl;
+import com.lil.pretty.domain.date.model.DateDtlId;
 
 
-public interface DateDtlRepository extends CrudRepository<DateDtl,String>{
+public interface DateDtlRepository extends CrudRepository<DateDtl,DateDtlId>{
 	@Query( value = "WITH dd_agg AS (   \n"
 	           + "      SELECT          \n"
 	           + "         dm.dm_cd,    \n"

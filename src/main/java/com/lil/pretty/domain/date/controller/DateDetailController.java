@@ -28,7 +28,7 @@ public class DateDetailController {
 	public ResponseEntity<CommonResponse> getDateDtlItems(@RequestBody Map<String ,String> request){
 		try {
 			List<Map<String,Object>> items = dateDetailService.getDateDtlItems(request.get("dmCd"));
-			System.out.println("items::::"+items);
+			
 			return ResponseEntity.ok(new CommonResponse(true,items,"Success"));
 		}catch(Exception e){ return ResponseEntity.status(401).body(new CommonResponse (false,null,"Failed"));} 
 	}
