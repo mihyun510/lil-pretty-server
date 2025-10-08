@@ -2,9 +2,11 @@ package com.lil.pretty.domain.date.repository;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lil.pretty.domain.date.model.DateDtl;
 import com.lil.pretty.domain.date.model.DateDtlId;
@@ -20,7 +22,7 @@ public interface DateDtlRepository extends CrudRepository<DateDtl,DateDtlId>{
 	           + "         dd.dd_desc,  \n"
 	           + "         MAX(dc.dc_price) AS dd_price, \n"
 	           + "         MAX(dd.dd_views) AS dd_maxview,      \n"
-	           + "         COUNT(dr.dr_cd)  AS dd_cnt           \n"
+	           + "         COUNT(distinct dr.dr_cd)  AS dd_cnt  \n"
 	           + "      FROM lilprettydb.date_mst dm            \n"
 	           + "      JOIN lilprettydb.date_dtl dd            \n"
 	           + "              ON dm.dm_cd = dd.dm_cd          \n"
@@ -37,5 +39,12 @@ public interface DateDtlRepository extends CrudRepository<DateDtl,DateDtlId>{
 	           + "   ) AS dd_rank  \n"
 	           + "  FROM dd_agg a  \n"
 	           + "   WHERE a.dm_cd = :dmCd;" ,nativeQuery = true)
-	   List<Map<String,Object>> findDateDtlItems(@Param("dmCd") String dmCd);       
+	   List<Map<String,Object>> findDateDtlItems(@Param("dmCd") String dmCd);   
+	
+	   @Modifying
+	   @Transactional
+	   @Query(value = "UPDATE lilprettydb.date_dtl SET dd_views = dd_views+1\n"
+	    				+ "WHERE dd_cd= :ddCd;", nativeQuery = true)
+	    int saveDateDtlItems(@Param("ddCd") String ddCd);
 	}
+

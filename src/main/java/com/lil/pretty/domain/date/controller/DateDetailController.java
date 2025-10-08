@@ -1,5 +1,6 @@
 package com.lil.pretty.domain.date.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,22 @@ public class DateDetailController {
 			return ResponseEntity.ok(new CommonResponse(true, items,"Success"));
 		}catch(Exception e) {
 			return ResponseEntity.status(401).body(new CommonResponse(false, null,"Failed"));
+		}
+	}
+	@PostMapping("/saveDateDtlItems")
+	public ResponseEntity<CommonResponse>  saveDateDtlItems(@RequestBody Map<String,String>request){
+		try {
+			String dmCd = request.get("dmCd");
+			String ddCd = request.get("ddCd");
+			int updated = dateDetailService.saveDateDtlItems(ddCd);
+			Map<String,Object> item = new HashMap<String, Object>();
+			item.put("updated", updated);
+			
+			
+			return ResponseEntity.ok(new CommonResponse(true, item,"Success"));
+		}catch(Exception e) {
+			
+			return ResponseEntity.status(500).body(new CommonResponse(false, null,"Failed"));
 		}
 	}
 }

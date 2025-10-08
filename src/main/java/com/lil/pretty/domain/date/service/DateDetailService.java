@@ -6,6 +6,7 @@ import com.lil.pretty.domain.date.repository.DateDtlCourseRepository;
 import com.lil.pretty.domain.date.repository.DateDtlRepository;
 import com.lil.pretty.domain.date.repository.DateDtlReviewsRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,8 @@ public class DateDetailService {
 	public List<Map<String,Object>> getDateDtlCourse(String ddCd){
 		return dateDtlCourseRepository.findDateDtlCourse(ddCd);
 	}
+    @Transactional
+    public int saveDateDtlItems(String ddCd) {
+	    return dateDtlRepository.saveDateDtlItems(ddCd);
+    }
 }
