@@ -34,7 +34,7 @@ spring:
       max-request-size: 10MB
 
 file:
-  upload-dir: ${user.dir}/upload	
+  upload-dir: ./upload	
 
 jwt:
   secret: GkLf28hBrtykPdzKmMCiO5w+QwKctBQzql8rV0BMy4s=
