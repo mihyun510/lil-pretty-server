@@ -1,8 +1,11 @@
 package com.lil.pretty.domain.common.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,29 +46,21 @@ public class FileController {
      * 📥 파일 다운로드
      * 예시 요청: GET /api/file/download/mealRec/테이블_정의서_20251007122110.xlsx
      */
-    @GetMapping("/download/**")
-    public ResponseEntity<ByteArrayResource> downloadFile(HttpServletRequest request) throws Exception {
-        // URI 전체 경로 추출
-        String requestUri = request.getRequestURI(); // /api/file/download/mealRec/테이블_정의서_...
-        String encodedPath = requestUri.substring(requestUri.indexOf("/download/") + 10);
+    @GetMapping("/download/{folder}/{fileName:.+}")
+    public ResponseEntity<ByteArrayResource> downloadFile(
+            @PathVariable String folder,
+            @PathVariable String fileName) throws IOException {
+        Path filePath = Paths.get("upload", folder, fileName); 
+        if (!Files.exists(filePath)) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + filePath);
+        }
 
-        // URL 디코딩 (한글, 공백 등 포함)
-        String fullPath = URLDecoder.decode(encodedPath, StandardCharsets.UTF_8);
-        log.info("📂 요청 파일 경로: {}", fullPath);
-
-        // 파일 읽기
-        byte[] data = fileService.downloadFile(fullPath);
+        byte[] data = Files.readAllBytes(filePath);
         ByteArrayResource resource = new ByteArrayResource(data);
 
-        // 파일명 추출
-        Path path = Paths.get(fullPath);
-        String fileName = path.getFileName().toString();
-
-        //파일명 인코딩 (한글 포함 시 깨짐 방지)
         String encodedFilename = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20");
 
-        // 응답
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFilename)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
