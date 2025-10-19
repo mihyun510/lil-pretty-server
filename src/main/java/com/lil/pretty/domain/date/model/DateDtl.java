@@ -30,9 +30,7 @@ public class DateDtl extends BaseEntity{
 	@Column(name="dd_desc", length=1000)
 	private String ddDesc;
 	
-	@Column(name="dd_price", nullable = false)
-	private Integer ddPrice;
-	 
-	@Column(name="dd_location", length = 80 , nullable = false)
-	private String ddLocation;
+	@Column(name="dd_views")
+	private Integer ddViews;	
+	
 }
