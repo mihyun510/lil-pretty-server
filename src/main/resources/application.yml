@@ -34,7 +34,7 @@ spring:
       max-request-size: 10MB
 
 file:
-  upload-dir: /Users/mihyun/WEB_DEVELOP/workspace/lil-pretty/lilPertty/upload	
+  upload-dir: ${user.dir}/upload	
 
 jwt:
   secret: GkLf28hBrtykPdzKmMCiO5w+QwKctBQzql8rV0BMy4s=
