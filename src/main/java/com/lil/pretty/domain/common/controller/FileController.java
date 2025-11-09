@@ -50,7 +50,8 @@ public class FileController {
     @GetMapping("download/{folder}/{fileName:.+}")
     public ResponseEntity<ByteArrayResource> downloadFile(
             @PathVariable String folder,
-            @PathVariable String fileName) throws IOException {
+            @PathVariable String fileName,
+            HttpServletRequest request) throws IOException {
         log.info("폴더: {}, 파일명: {}", folder, fileName);
 
         // 실제 파일 경로
@@ -64,7 +65,23 @@ public class FileController {
         ByteArrayResource resource = new ByteArrayResource(data);
 
         // 파일명 브라우저 호환 인코딩
-        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        //String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        
+        // ✅ 브라우저별 파일명 인코딩 처리
+        String userAgent = request.getHeader("User-Agent");
+        String encodedFileName;
+
+        if (userAgent != null && userAgent.contains("Trident")) { 
+            // IE (레거시)
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", " ");
+        } else if (userAgent != null && userAgent.contains("Edge")) {
+            // ✅ Edge (핵심: 엣지는 URL 인코딩을 UTF-8로 정확히 해석 못함)
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        } else {
+            // 크롬, 사파리, 파이어폭스 등
+            encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        }
+        
         String contentDisposition = "attachment; filename*=UTF-8''" + encodedFileName;
 
         return ResponseEntity.ok()
