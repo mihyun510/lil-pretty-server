@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import com.lil.pretty.domain.common.service.FileService;
 
@@ -46,23 +47,45 @@ public class FileController {
      * 📥 파일 다운로드
      * 예시 요청: GET /api/file/download/mealRec/테이블_정의서_20251007122110.xlsx
      */
-    @GetMapping("/download/{folder}/{fileName:.+}")
+    @GetMapping("download/{folder}/{fileName:.+}")
     public ResponseEntity<ByteArrayResource> downloadFile(
             @PathVariable String folder,
-            @PathVariable String fileName) throws IOException {
-        Path filePath = Paths.get("upload", folder, fileName); 
+            @PathVariable String fileName,
+            HttpServletRequest request) throws IOException {
+        log.info("폴더: {}, 파일명: {}", folder, fileName);
+
+        // 실제 파일 경로
+        Path filePath = Paths.get("upload", folder, fileName);
         if (!Files.exists(filePath)) {
             throw new FileNotFoundException("파일을 찾을 수 없습니다: " + filePath);
         }
 
+        // 파일 읽기
         byte[] data = Files.readAllBytes(filePath);
         ByteArrayResource resource = new ByteArrayResource(data);
 
-        String encodedFilename = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
-                .replaceAll("\\+", "%20");
+        // 파일명 브라우저 호환 인코딩
+        //String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        
+        // ✅ 브라우저별 파일명 인코딩 처리
+        String userAgent = request.getHeader("User-Agent");
+        String encodedFileName;
+
+        if (userAgent != null && userAgent.contains("Trident")) { 
+            // IE (레거시)
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", " ");
+        } else if (userAgent != null && userAgent.contains("Edge")) {
+            // ✅ Edge (핵심: 엣지는 URL 인코딩을 UTF-8로 정확히 해석 못함)
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        } else {
+            // 크롬, 사파리, 파이어폭스 등
+            encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        }
+        
+        String contentDisposition = "attachment; filename*=UTF-8''" + encodedFileName;
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFilename)
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(data.length)
                 .body(resource);
