@@ -43,30 +43,25 @@ public class DateManagerController {
 				return ResponseEntity.status(404).body(new CommonResponse(false, null,"Fail"));
 			}
 		}
-	//데이트 코스 추가
-	@PostMapping("/insertDateCourse")
-	public ResponseEntity<CommonResponse> insertDateCourse(@RequestBody Map<String,String> request, @AuthenticationPrincipal(expression = "username") String userId) {
-		try {
-			
-			String dmCd = request.get("dmCd");
-	
-			return ResponseEntity.ok(new CommonResponse(true, dmCd,"Sucess"));
-		}catch(Exception e) {
-			return ResponseEntity.status(404).body(new CommonResponse(false, null,"Fail"));
-		}
-	}
-	
-	//데이트 코스 수정
-	@PostMapping("/updateDateCourse")
-	public ResponseEntity<CommonResponse> updateDateCourse(@RequestBody Map<String,Object> request,@AuthenticationPrincipal(expression = "username") String userId) {
+
+	//데이트 코스 저장
+	@PostMapping("/saveDateCourse")
+	public ResponseEntity<CommonResponse> saveDateCourse(@RequestBody Map<String,Object> request,@AuthenticationPrincipal(expression = "username") String userId) {
 		try {
 			
 			String dmCd = (String)request.get("dmCd");
+			List<Map<String, Object>> item = dateManagerService.findDateCourseItems(dmCd);
 			List<Map<String, Object>> dateCourseList = (List<Map<String, Object>>) request.get("DateCourse");
-			
+        	
 			int result = 0;
-			dateManagerService.updatetDateCourseItems(dateCourseList, userId);
-		
+			//기존에 없음  > insert
+			if(item.size()==0) {
+				dateManagerService.insertDateCourseItems(dateCourseList, userId);
+			}else{
+				
+				dateManagerService.saveDateCourseItems(dateCourseList, userId);
+			}
+			
 			return ResponseEntity.ok(new CommonResponse(true, result,"Sucess"));
 		}catch(Exception e) {
 			return ResponseEntity.status(404).body(new CommonResponse(false, null,"Fail"));
@@ -74,15 +69,29 @@ public class DateManagerController {
 	}
 	//데이트 코스 삭제
 	@PostMapping("/deleteDateCourse")
-	public ResponseEntity<CommonResponse> deleteDateCourse(@RequestBody Map<String,String> request,@AuthenticationPrincipal(expression = "username") String userId) {
+	public ResponseEntity<CommonResponse> deleteDateCourse(@RequestBody Map<String,String> request) {
 		try {
 			
 			String ddCd = request.get("ddCd");
-	
-			return ResponseEntity.ok(new CommonResponse(true, ddCd,"Sucess"));
+			
+			int result = dateManagerService.deletetDateCourseItems(ddCd);
+			System.out.println("resultresultresultresultresultresultresult"+result);
+			return ResponseEntity.ok(new CommonResponse(true, result,"Sucess"));
 		}catch(Exception e) {
 			return ResponseEntity.status(404).body(new CommonResponse(false, null,"Fail"));
 		}
 	}
-	
+	//데이트 상세 코스 삭제
+		@PostMapping("/deleteDetailDateCourse")
+		public ResponseEntity<CommonResponse> deleteDetailDateCourse(@RequestBody Map<String,String> request) {
+			try {
+				
+				String dcCd = request.get("dcCd");
+				
+				int result = dateManagerService.deletetDetailDateCourseItems(dcCd);
+				return ResponseEntity.ok(new CommonResponse(true, result,"Sucess"));
+			}catch(Exception e) {
+				return ResponseEntity.status(404).body(new CommonResponse(false, null,"Fail"));
+			}
+		}
 }

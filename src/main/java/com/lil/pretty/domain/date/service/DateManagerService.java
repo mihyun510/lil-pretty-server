@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.lil.pretty.domain.date.repository.DateMangerRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,18 +24,26 @@ public class DateManagerService {
 			return dateManagerRepository.getDateCourseDetailItems(ddCd);
 	}
 	//데이트 코스 추가
-	public List<Map<String, Object>> insertDateCourseItems(String dmCd ,String UserId){
+	public List<Map<String, Object>> insertDateCourseItems(List<Map<String, Object>> dateCourseList ,String UserId){
 		
-		return dateManagerRepository.insertDateCourseItems(dmCd,UserId);
+		return dateManagerRepository.insertDateCourseItems(dateCourseList,UserId);
 	}
+	@Transactional
 	//데이트 코스 수정
-	public int updatetDateCourseItems(List<Map<String, Object>> dateCourseList ,String UserId){
+	public int saveDateCourseItems(List<Map<String, Object>> dateCourseList ,String UserId){
 		
 		return dateManagerRepository.updateDateCourseItems(dateCourseList,UserId);
 	}
 	//데이트 코스 삭제
-	public List<Map<String, Object>> deletetDateCourseItems(String ddCd){
-		
+	@Transactional
+	public int deletetDateCourseItems(String ddCd){
+		System.out.println("222222"+ddCd);
 		return dateManagerRepository.deleteDateCourseItems(ddCd);
+	}
+	//데이트 상세코스 삭제
+	@Transactional
+	public int deletetDetailDateCourseItems(String dcCd){
+		System.out.println("222222"+dcCd);
+		return dateManagerRepository.deleteDetailDateCourseItems(dcCd);
 	}
 }

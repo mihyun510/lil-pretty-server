@@ -41,7 +41,7 @@ public interface DateMangerRepository extends CrudRepository <DateMst, String> {
 	    		+ "    		NOW(),\n"
 	    		+ "    		:userId\n"
 	    		+ "		 FROM date_dtl;", nativeQuery = true)
-	List<Map<String,Object>>insertDateCourseItems(@Param("ddCd") String ddCd,@Param("userId") String userId);
+	List<Map<String,Object>>insertDateCourseItems(@Param("ddCd") List<Map<String, Object>> dateCourseList,@Param("userId") String userId);
 	
 	//데이트 코스 수정
 	@Modifying
@@ -58,7 +58,14 @@ public interface DateMangerRepository extends CrudRepository <DateMst, String> {
 	//데이트 코스 삭제
 	@Modifying
 	@Query(value = "DELETE FROM  date_dtl  \n"
-		    + " WHERE dd_cd = :ddCd; ", nativeQuery = true)
+		    + " WHERE dd_cd = :ddCd ", nativeQuery = true)
   
-	List<Map<String,Object>> deleteDateCourseItems(@Param("ddCd") String ddCd);
+	int deleteDateCourseItems(@Param("ddCd") String ddCd);
+	
+	//데이트 상세코스 삭제
+		@Modifying
+		@Query(value = "DELETE FROM  date_dtl_course  \n"
+			    + " WHERE dc_cd = :dcCd ", nativeQuery = true)
+	  
+		int deleteDetailDateCourseItems(@Param("dcCd") String dcCd);
 }
