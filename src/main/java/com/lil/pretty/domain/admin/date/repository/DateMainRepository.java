@@ -23,12 +23,12 @@ public interface DateMainRepository extends CrudRepository <DateMst, String> {
 	//데이트 코스 상세 조회
 		@Query(value = "SELECT  dd.dd_cd,dt.dc_cd ,dt.dc_title,dt.dc_img,dt.dc_desc,dd.dd_price \n"
 				+ " FROM date_dtl dd \n"
-				+ " INNER JOIN date_dtl_course dt \n"
+				+ " INNER JOIN date_dtl_course dt \n" 
 				+ " ON dd.dd_cd =dt.dd_cd \n"
 			    + " WHERE dt.dd_cd = :ddCd; ", nativeQuery = true)
 	  
 		List<Map<String,Object>> getDateCourseDetailItems(@Param("ddCd") String ddCd);
-		
+		 
 	 @Modifying
 	 @Query(value = "INSERT INTO date_dtl (dd_cd, dd_title, dd_img, dd_desc,in_date,in_user,upd_date,upd_user) \n"
 	    		+ "		SELECT \n"
