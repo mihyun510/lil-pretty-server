@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.admin.comm.repository;
+package com.lil.pretty.domain.admin.commoncode.model;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CommCodeId implements Serializable {
+public class CommonCodeId implements Serializable {
     private String cmGrpCd;
     private String cmDtCd;
 }

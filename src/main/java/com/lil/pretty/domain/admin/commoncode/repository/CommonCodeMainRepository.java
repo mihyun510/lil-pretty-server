@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.admin.comm.repository;
+package com.lil.pretty.domain.admin.commoncode.repository;
 import java.util.List;
 import java.util.Map;
 
@@ -8,9 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.lil.pretty.domain.admin.comm.model.CommCode;
-import com.lil.pretty.domain.date.model.DateDtl;
-import com.lil.pretty.domain.date.model.DateDtlId;
+import com.lil.pretty.domain.admin.commoncode.model.CommonCode;
+import com.lil.pretty.domain.admin.commoncode.model.CommonCodeId;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.IdClass;
@@ -18,7 +17,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 
-public interface CommCodeSettingRepository extends CrudRepository<CommCode,CommCodeId>{
+public interface CommonCodeMainRepository extends CrudRepository<CommonCode,CommonCodeId>{
 	//데이트 코스 조회
 	@Query(value = "SELECT cm_grp_cd, cm_dt_cd, cm_grp_nm, cm_grp_desc, cm_dt_nm, cm_dt_desc \n"
 

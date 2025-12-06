@@ -1,6 +1,5 @@
-package com.lil.pretty.domain.admin.comm.model;
+package com.lil.pretty.domain.admin.commoncode.model;
 
-import com.lil.pretty.domain.admin.comm.repository.CommCodeId;
 import com.lil.pretty.domain.common.model.BaseEntity;
 
 
@@ -12,9 +11,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 @Data
 @Entity
-@IdClass(CommCodeId.class)
+@IdClass(CommonCodeId.class)
 @Table(name = "commoncode")
-public class CommCode extends BaseEntity{
+public class CommonCode extends BaseEntity{
 	@Id
 	@Column(name="cm_grp_cd", length=5, nullable = false)
 	private String cmGrpCd;
