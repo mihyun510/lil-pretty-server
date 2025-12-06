@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.commoncode.controller;
+package com.lil.pretty.domain.common.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lil.pretty.domain.common.dto.CommonResponse;
-import com.lil.pretty.domain.commoncode.service.CommonCodeService;
+import com.lil.pretty.domain.common.service.CommonCodeService;
 
 import lombok.RequiredArgsConstructor;
 

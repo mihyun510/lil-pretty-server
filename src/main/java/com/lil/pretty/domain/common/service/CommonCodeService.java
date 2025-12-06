@@ -1,4 +1,4 @@
-package com.lil.pretty.domain.commoncode.service;
+package com.lil.pretty.domain.common.service;
 
 import java.util.List;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.lil.pretty.domain.commoncode.repository.CommonCodeRepository;
+import com.lil.pretty.domain.common.repository.CommonCodeRepository;
 
 import lombok.RequiredArgsConstructor;
 
