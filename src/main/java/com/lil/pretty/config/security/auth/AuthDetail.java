@@ -1,8 +1,10 @@
 package com.lil.pretty.config.security.auth;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.lil.pretty.domain.user.model.User;
@@ -21,7 +23,8 @@ public class AuthDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // DB에 저장된 role 사용 (ex: "ADMIN", "USER")
+    	return List.of(() -> user.getUsRole());
     }
 
     @Override

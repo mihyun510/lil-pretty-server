@@ -61,6 +61,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         //String role = claims.get("role", String.class);
         log.info("Extracted Role: " + role);
         log.info("Extracted usId: " + usId);
+        log.info("Authorization Header: " + authHeader);
 
         //username 꺼내와서 jwt와 user token 비교
         if (usId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -72,6 +73,10 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+//        if (!"OPTIONS".equalsIgnoreCase(request.getMethod())) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
     }
 
 
