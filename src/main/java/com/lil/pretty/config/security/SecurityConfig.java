@@ -49,11 +49,12 @@ public class SecurityConfig implements WebMvcConfigurer{
             	.requestMatchers("/error").permitAll()  // 🔥 추가: 예외 처리 경로 허용
             	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // OPTIONS 요청 허용
                 .requestMatchers("/auth/**").permitAll()
+                //.requestMatchers("/api/cmm/**").authenticated() // 로그인 한 사람은 누구나 OK
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/user/**").hasAuthority("USER")
                 //.requestMatchers("/api/products/**").hasAnyAuthority("USER", "ADMIN")
                 //.requestMatchers("/api/products/get/items").hasRole("USER")
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()// 로그인 한 사람은 누구나 OK
             )
             .addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .httpBasic(AbstractHttpConfigurer::disable)
