@@ -61,14 +61,55 @@ public class AuthController {
             
             UserDetails userDetails = authDetailService.loadUserByUsername(authRequest.getUsId());
             User user = ((AuthDetail) userDetails).getUser(); // 원래 User 객체 가져오기
-            String token = jwtAuthenticationService.generateToken(user.getUsId(), user.getUsRole());
+            //String token = jwtAuthenticationService.generateToken(user.getUsId(), user.getUsRole());
+            
+            // Access Token
+            String accessToken = jwtAuthenticationService.generateAccessToken(
+                    user.getUsId(), user.getUsRole()
+            );
 
-            return ResponseEntity.ok(new AuthResponse(token, user, "Success"));
+            // Refresh Token
+            String refreshToken = jwtAuthenticationService.generateRefreshToken(user.getUsId());
+
+            
+            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken, user, "Success"));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body(new AuthResponse(null, null,"Invalid credentials"));
+            return ResponseEntity.status(401).body(new AuthResponse(null, null, null,"Invalid credentials"));
         }
     }
     
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> requestBody) {
+
+        String refreshToken = requestBody.get("refreshToken");
+
+        if (refreshToken == null) {
+            return ResponseEntity.status(400).body("Refresh token is required");
+        }
+
+        // Refresh Token 검증
+        if (!jwtAuthenticationService.validateRefreshToken(refreshToken)) {
+            return ResponseEntity.status(401).body("Invalid refresh token");
+        }
+
+        // Refresh Token에서 userId 추출
+        String userId = jwtAuthenticationService.extractUserId(refreshToken, true);
+
+        // 유저 정보 조회
+        UserDetails userDetails = authDetailService.loadUserByUsername(userId);
+        User user = ((AuthDetail) userDetails).getUser();
+
+        // 새로운 Access Token 발급
+        String newAccessToken = jwtAuthenticationService.generateAccessToken(
+                user.getUsId(),
+                user.getUsRole()
+        );
+
+        // Refresh Token은 재발급하지 않음 → 그대로 반환
+        return ResponseEntity.ok(new AuthResponse(newAccessToken, refreshToken, user, "Success"));
+    }
+
+
     @PostMapping("/save/user")
     public ResponseEntity<String> saveUser(@RequestBody User user) {
         try {

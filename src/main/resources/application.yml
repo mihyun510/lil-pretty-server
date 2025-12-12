@@ -36,7 +36,8 @@ file:
   upload-dir: ./upload	
 
 jwt:
-  secret: GkLf28hBrtykPdzKmMCiO5w+QwKctBQzql8rV0BMy4s=
+  accessKey: GkLf28hBrtykPdzKmMCiO5w+QwKctBQzql8rV0BMy4s=   # Access Token 비밀키 (기존 secret 사용)
+  refreshKey: QmfFNjW5jzB0XPBvygW0lXd38lQjsmYOwsXuYOErsqs=                  # Refresh Token 비밀키 (BASE64 32바이트 이상)
 
 logging:
   level:
