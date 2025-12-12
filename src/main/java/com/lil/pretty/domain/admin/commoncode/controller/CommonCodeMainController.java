@@ -27,14 +27,10 @@ public class CommonCodeMainController {
 	@PostMapping("/getCommCodeItems")
 	public  ResponseEntity<CommonResponse> getCommCodeItems(@RequestBody Map<String ,String> request){
 		try {
-			System.out.println("---------------------grpCd:::"+request.get("grpCd"));
-			System.out.println("grpNm:::"+request.get("grpNm"));
 			List<Map<String,Object>> items = commonCodeMainService.getCommCodeItems(request.get("grpCd"),request.get("grpNm"));
-			System.out.println("items:::"+items);
 			return ResponseEntity.ok(new CommonResponse(true, items,"Success"));
 		}
-		catch(Exception e) {
-			
+		catch(Exception e) {	
 			return ResponseEntity.status(401).body(new CommonResponse(false,null,"Failed"));
 		}
 	}
