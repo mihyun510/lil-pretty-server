@@ -46,7 +46,11 @@ public class SecurityConfig implements WebMvcConfigurer{
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) 
-            				      -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+            									//로그인 안 한 사용자가 인증이 필요한 API를 호출했을 때 서버가 401 Unauthorized로 응답
+            									-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+					            		.accessDeniedHandler((request, response, accessDeniedException) 
+					            				//로그인은 했는데 권한 부족 서버가 403 Forbidden로 응답
+					            				-> response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden"))		
             )
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/error").permitAll()  // 🔥 추가: 예외 처리 경로 허용

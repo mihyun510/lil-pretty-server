@@ -1,8 +1,10 @@
 package com.lil.pretty.config.security.auth;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,9 @@ import com.lil.pretty.config.security.jwt.JwtTokenProvider;
 import com.lil.pretty.domain.user.model.User;
 import com.lil.pretty.domain.user.service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
     	
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -70,19 +75,35 @@ public class AuthController {
 
             // Refresh Token
             String refreshToken = jwtAuthenticationService.generateRefreshToken(user.getUsId());
-
             
-            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken, user, "Success"));
+            // 🔥 Refresh Token → HttpOnly Cookie > HttpOnly Cookie 방식 (보안 최강)
+            ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                    .httpOnly(true)
+                    .secure(false) // ⚠ 로컬에서는 false
+                    .path("/auth/refresh")
+                    .maxAge(60 * 60 * 24 * 14)
+                    .sameSite("Strict")
+                    .build();
+
+            response.addHeader("Set-Cookie", cookie.toString());
+            													//refreshToken > HttpOnly Cookie 방식이므로 화면으로 전달x
+            return ResponseEntity.ok(new AuthResponse(accessToken, null, user, "Success"));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body(new AuthResponse(null, null, null,"Invalid credentials"));
         }
     }
     
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<?> refresh(HttpServletRequest request) { //@RequestBody Map<String, String> requestBody,
 
-        String refreshToken = requestBody.get("refreshToken");
-
+        //String refreshToken = requestBody.get("refreshToken");
+    	// 🔥 Refresh Token → HttpOnly Cookie > HttpOnly Cookie 방식 (보안 최강)
+    	String refreshToken = Arrays.stream(request.getCookies())
+    	        .filter(c -> c.getName().equals("refreshToken"))
+    	        .findFirst()
+    	        .map(Cookie::getValue)
+    	        .orElse(null);
+    	
         if (refreshToken == null) {
             return ResponseEntity.status(400).body("Refresh token is required");
         }
@@ -105,8 +126,8 @@ public class AuthController {
                 user.getUsRole()
         );
 
-        // Refresh Token은 재발급하지 않음 → 그대로 반환
-        return ResponseEntity.ok(new AuthResponse(newAccessToken, refreshToken, user, "Success"));
+        // Refresh Token은 재발급하지 않음 → 그대로 반환				//refreshToken
+        return ResponseEntity.ok(new AuthResponse(newAccessToken, null, user, "Success"));
     }
 
 
