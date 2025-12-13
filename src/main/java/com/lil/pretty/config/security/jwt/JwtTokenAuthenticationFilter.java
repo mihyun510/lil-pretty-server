@@ -61,7 +61,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (ExpiredJwtException e) {
         	log.info("ExpiredJwtException: " + e.toString());
-            // 🔥 Access Token 만료 → 401 내지 말고 통과시켜야 함!
+            // 🔥 Access Token 만료 → 401 내지 말고 통과시켜야 함! >>> why?? 프론트 axios interceptor가 refresh 시도도 못 함
             filterChain.doFilter(request, response);
             return;
         } catch (Exception e) {
@@ -69,7 +69,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        
         usId = jwtAuthenticationService.extractUserId(jwt, false); //username 꺼내오
         String role = jwtAuthenticationService.extractRole(jwt, false); // role 꺼내오기
 
@@ -80,10 +79,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
         // 이미 인증된 상태면 패스
         if (usId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             // DB에서 사용자 정보 조회
             UserDetails userDetails = authDetailService.loadUserByUsername(usId);
-
             // 인증 처리
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
@@ -91,9 +88,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                             null,
                             userDetails.getAuthorities()
                     );
-
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
