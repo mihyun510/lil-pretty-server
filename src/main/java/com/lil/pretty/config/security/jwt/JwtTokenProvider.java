@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -108,6 +109,8 @@ public class JwtTokenProvider {
                             .getBody();
         return claims.get("role", String.class); // 역할 정보 추출
     }
+
+    	
 /*
     // 토큰 검증
     public boolean validateToken(String token, UserDetails userDetails) {
