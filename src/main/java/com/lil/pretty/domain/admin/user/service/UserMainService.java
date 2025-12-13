@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+
+import com.lil.pretty.domain.admin.user.dto.UserMain;
 import com.lil.pretty.domain.admin.user.repository.UserMainRepository;
 import com.lil.pretty.domain.user.model.User;
 
@@ -23,8 +25,8 @@ private final UserMainRepository userMainRepository;
 		return userMainRepository.deleteAdminUserItems(usId);
 	}
 	@Transactional
-	public int updateAdminUserItems(String usId, String usPw, String usNm, String usEmail, String usPhone, String usRole, String usImg){
+	public int updateAdminUserItems(UserMain userRequest){
 		
-		return userMainRepository.updateAdminUserItems(usId, usPw, usNm, usEmail, usPhone, usRole, usImg);
+		return userMainRepository.updateAdminUserItems(userRequest);
 	}
 }

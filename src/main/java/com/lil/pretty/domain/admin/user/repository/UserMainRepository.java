@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.lil.pretty.domain.admin.user.dto.UserMain;
 import com.lil.pretty.domain.user.model.User;
 
 public interface UserMainRepository extends CrudRepository <User, String> {
@@ -24,25 +25,20 @@ public interface UserMainRepository extends CrudRepository <User, String> {
 	  
 		int deleteAdminUserItems(@Param("usId") String usId);
 	
-	//사용자 정보 수정
+	// 사용자 정보 수정
 	@Modifying
 	@Query(value = "UPDATE user  \n"
-			+ " SET \n"
-			+ "  us_pw = :usPw \n"
-			+ " , us_nm = :usNm \n"
-			+ " , us_email = :usEmail \n"
-			+ " , us_phone = :usPhone \n"
-			+ " , us_role = :usRole \n"
-			+ " , us_img = :usImg \n"
-			+ " , upd_date = NOW() \n"
-			+ " , upd_user = :usId \n"
-		    + " WHERE us_id = :usId; ", nativeQuery = true)
-  
-	int updateAdminUserItems(@Param("usId") String usId, 
-	        @Param("usPw") String usPw,
-	        @Param("usNm") String usNm, 
-	        @Param("usEmail") String usEmail,
-	        @Param("usPhone") String usPhone,
-	        @Param("usRole") String usRole,
-	        @Param("usImg") String usImg);
+	        + " SET \n"
+	        + "  us_pw = :#{#userRequest.us_pw} \n" 
+	        + " , us_nm = :#{#userRequest.us_nm} \n"
+	        + " , us_email = :#{#userRequest.us_email} \n"
+	        + " , us_phone = :#{#userRequest.us_phone} \n"
+	        + " , us_role = :#{#userRequest.us_role} \n"
+	        + " , us_img = :#{#userRequest.us_img} \n"
+	        + " , upd_date = NOW() \n"
+	        + " , upd_user = :#{#userRequest.us_id} \n"
+
+	        + " WHERE us_id = :#{#userRequest.us_id}", nativeQuery = true) 
+	int updateAdminUserItems(@Param("userRequest") UserMain userRequest);
+ 
 }

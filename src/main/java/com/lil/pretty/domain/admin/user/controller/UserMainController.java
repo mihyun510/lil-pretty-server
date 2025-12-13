@@ -56,19 +56,8 @@ public class UserMainController {
 	public ResponseEntity<CommonResponse> updateAdminUserItems(@RequestBody UserMain userRequest){
 	
 		try{
-			String usId = userRequest.getUs_id();
-	        String usPw = userRequest.getUs_pw();
-	        String usNm = userRequest.getUs_nm();
-	        String usEmail = userRequest.getUs_email();
-	        String usPhone = userRequest.getUs_phone();
-	        String usRole = userRequest.getUs_role();
-	        String usImg = userRequest.getUs_img();
-	        System.out.print("usId::"+usId);
-	        System.out.print("usPw::"+usPw);
-	        System.out.print("usNm::"+usNm);
-	        int items = userMainService.updateAdminUserItems(
-	                usId, usPw, usNm, usEmail, usPhone, usRole, usImg
-	            );
+			
+	        int items = userMainService.updateAdminUserItems(userRequest);
 	        return ResponseEntity.ok(new CommonResponse(true, items, "Success"));
 		}
 		catch(Exception e) {
