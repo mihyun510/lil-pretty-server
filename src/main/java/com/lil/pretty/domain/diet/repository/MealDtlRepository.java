@@ -17,7 +17,6 @@ public interface MealDtlRepository extends CrudRepository<MealDtl, String> {
     		+ "	   		   md.md_cd,\n"
     		+ "	   		   mm.mm_title,\n"
     		+ "	   		   fn_get_common_code_nm('ML001', mm.mm_subject)  AS 'mm_subject_nm',\n"
-    		+ "	   		   fn_get_common_code_nm('ML001', mm.mm_category) AS 'mm_category_nm',\n"
     		+ "	   		   mm.mm_desc,\n"
     		+ "	   		   mm.mm_kcal,\n"
     		+ "	   		   mm.mm_pri,\n"

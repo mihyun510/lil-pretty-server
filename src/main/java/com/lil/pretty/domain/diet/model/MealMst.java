@@ -23,9 +23,6 @@ public class MealMst  extends BaseEntity {
     @Column(name = "mm_subject", length = 5, nullable = false)
     private String mmSubject;  // 식단 주제
 
-    @Column(name = "mm_category", length = 5, nullable = false)
-    private String mmCategory;  // 식단 카테고리
-
     @Column(name = "mm_desc", length = 1000)
     private String mmDesc;  // 식단 설명
 
