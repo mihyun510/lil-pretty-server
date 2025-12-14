@@ -21,6 +21,10 @@ public interface MealMainRepository extends CrudRepository<MealMst, String> {
     		+ ", in_user \n"
     		+ "FROM meal_mst mm \n"
     		+ "WHERE ( :mmSubject = 'ALL' OR mm_subject = :mmSubject)\n"
-    		+ "and  ( :mmCategory = 'ALL' OR mm_category = :mmCategory)", nativeQuery = true)
+    		+ "  AND ( :mmCategory = 'ALL'"
+    		+ "		  OR (:mmCategory = '00001' AND mm.mm_pri BETWEEN 0 AND 5000)\n"
+    		+ "       OR (:mmCategory = '00002' AND mm.mm_pri BETWEEN 5000 AND 10000)\n"
+    		+ "       OR (:mmCategory = '00003' AND mm.mm_pri > 10000))"
+    		+ "", nativeQuery = true)
     List<Map<String,Object>> findAdminMealsItems(@Param("mmSubject") String mmSubject, @Param("mmCategory") String mmCategory );
 }
