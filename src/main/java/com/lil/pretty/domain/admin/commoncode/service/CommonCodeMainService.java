@@ -1,6 +1,7 @@
 package com.lil.pretty.domain.admin.commoncode.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.lil.pretty.domain.admin.commoncode.model.CommonCode;
 import com.lil.pretty.domain.admin.commoncode.model.CommonCodeId;
@@ -32,19 +33,25 @@ public class CommonCodeMainService {
 	}
 	//공통코드 삭제
 	@Transactional
-	public CUDCommonResponse deleteAdminCommCodeItems(CommonCodeId commonCodeId){
+	public CUDCommonResponse deleteAdminCommCodeItems(List<Map<String, String>> CodeList){
+		System.out.println("데이터 확인: " + CodeList);
 		List<CUDFailItems> failList = new ArrayList<>();
 		int successCount = 0;
-		try {
-		
-			CommonCode commonCode = commonCodeMainRepository.findById(commonCodeId).orElseThrow(() -> new IllegalArgumentException(commonCodeId+" => 존재하지 않는 데이터"));
-			// 실제 삭제
-			commonCodeMainRepository.delete(commonCode);
-            successCount++;
-		}catch (Exception e) {
-            // ❗ 여기서 예외를 삼켜야 전체 롤백 안 됨
-            failList.add(new CUDFailItems(commonCodeId, e.getMessage()));
-        }
+		for (Map<String, String> grCd : CodeList) {
+			System.out.println("데이터 확인: " + grCd);
+			try {
+				CommonCodeId id = new CommonCodeId(grCd.get("cm_grp_cd"), grCd.get("cm_dt_cd"));
+				CommonCode commonCode = commonCodeMainRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id+" => 존재하지 않는 데이터"));
+				
+				
+				// 실제 삭제
+				commonCodeMainRepository.delete(commonCode);
+				successCount++;
+			}catch (Exception e) {
+	            // ❗ 여기서 예외를 삼켜야 전체 롤백 안 됨
+	            failList.add(new CUDFailItems(grCd, e.getMessage()));
+	        }
+		}
 		  return new CUDCommonResponse(successCount, failList.size(), failList, null);
 	} 
 }

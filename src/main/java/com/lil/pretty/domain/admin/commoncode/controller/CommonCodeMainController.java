@@ -38,7 +38,7 @@ public class CommonCodeMainController {
 	}
 	//공통 코드 저장
 	@PostMapping("/insertCommGrpCodeItems")
-	public ResponseEntity<CUDCommonResponse> saveDateCourse(@RequestBody Map<String,String> request,@AuthenticationPrincipal(expression = "username") String userId) {
+	public ResponseEntity<CUDCommonResponse> insertAdminCommCodeItems(@RequestBody Map<String,String> request, @AuthenticationPrincipal(expression = "username") String userId) {
 		try {
 
 			List<Map<String,Object>> items = commonCodeMainService.getCommCodeItems(request.get("grpCd"),request.get("grpNm"));
@@ -52,14 +52,18 @@ public class CommonCodeMainController {
 	}
 	//공통 코드 삭제
 	@PostMapping("/deleteAdminCommCodeItems")
-	public ResponseEntity<CUDCommonResponse> deleteAdminCommCodeItems(@RequestBody CommonCodeId request) {
+	public ResponseEntity<CUDCommonResponse> deleteAdminCommCodeItems(@RequestBody Map<String, List<Map<String, String>>> param){
+		
+	List<Map<String, String>> grpCdList = param.get("grpCdList");
 		try {
-			
-			CUDCommonResponse result = commonCodeMainService.deleteAdminCommCodeItems(request);
-			return ResponseEntity.ok(new CUDCommonResponse<>(0, 0, result, "Success"));
+			if (grpCdList == null || grpCdList.isEmpty()) {
+                return ResponseEntity.badRequest().body(new CUDCommonResponse<>(0, grpCdList.size(), null, "삭제할 대상이 없습니다."));
+            }
+			CUDCommonResponse result = commonCodeMainService.deleteAdminCommCodeItems(grpCdList);
+			return ResponseEntity.ok(result);
 				
 			}catch(Exception e) {
-				return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, 0, null, "삭제 처리 중 오류가 발생했습니다."));
+				 return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, grpCdList.size(), null, "삭제 처리 중 오류가 발생했습니다."));
 			}
 		}	
 }
