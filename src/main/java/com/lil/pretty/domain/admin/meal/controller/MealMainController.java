@@ -47,7 +47,7 @@ public class MealMainController {
             return ResponseEntity.ok(result);
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, mmCdList.size(), null, "삭제 처리 중 오류가 발생했습니다."));
+            return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, mmCdList.size(), null, "삭제 처리 중 서버 오류가 발생했습니다."));
         }
         
     }
