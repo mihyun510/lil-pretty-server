@@ -11,6 +11,7 @@ import com.lil.pretty.domain.common.dto.CUDCommonResponse;
 import com.lil.pretty.domain.common.dto.CUDFailItems;
 import com.lil.pretty.domain.diet.model.MealMst;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -43,5 +44,9 @@ public class MealMainService {
         }
         
         return new CUDCommonResponse(successCount, failList.size(), failList, null);
+    }
+    
+    public MealMst getMealMstById(String mmCd) {
+        return mealMainRepository.findById(mmCd).orElseThrow(() -> new EntityNotFoundException("정보가 없습니다."));
     }
 }
