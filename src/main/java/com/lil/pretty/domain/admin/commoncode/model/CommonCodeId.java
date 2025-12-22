@@ -13,3 +13,4 @@ public class CommonCodeId implements Serializable {
     private String cmGrpCd;
     private String cmDtCd;
 }
+
