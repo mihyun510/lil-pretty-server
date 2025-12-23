@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lil.pretty.domain.admin.commoncode.dto.CommonCodeDto;
+import com.lil.pretty.domain.admin.commoncode.dto.CommoncodeIdDto;
 import com.lil.pretty.domain.admin.commoncode.service.CommonCodeMainService;
 import com.lil.pretty.domain.common.dto.CUDCommonResponse;
 import com.lil.pretty.domain.common.dto.CommonResponse;
@@ -61,20 +62,20 @@ public class CommonCodeMainController {
 			return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, 0, null, "저장 처리 중 오류가 발생했습니다."));
 		}
 	}
-//	//공통 코드 삭제
-//	@PostMapping("/deleteAdminCommCodeItems")
-//	public ResponseEntity<CUDCommonResponse> deleteAdminCommCodeItems(@RequestBody Map<String, List<Map<String, String>>> param){
-//		
-//	List<Map<String, String>> grpCdList = param.get("grpCdList");
-//		try {
-//			if (grpCdList == null || grpCdList.isEmpty()) {
-//                return ResponseEntity.badRequest().body(new CUDCommonResponse<>(0, grpCdList.size(), null, "삭제할 대상이 없습니다."));
-//            }
-//			CUDCommonResponse result = commonCodeMainService.deleteAdminCommCodeItems(grpCdList);
-//			return ResponseEntity.ok(result);
-//				
-//			}catch(Exception e) {
-//				 return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, grpCdList.size(), null, "삭제 처리 중 오류가 발생했습니다."));
-//			}
-//		}	
+	//공통 코드 삭제
+	@PostMapping("/deleteAdminCommCodeItems")
+	public ResponseEntity<CUDCommonResponse> deleteAdminCommCodeItems(@RequestBody List<CommoncodeIdDto> param){
+		
+	
+		try {
+			if (param.get(0) == null || param.size() == 0) {
+                return ResponseEntity.badRequest().body(new CUDCommonResponse<>(0, param.size(), null, "삭제할 대상이 없습니다."));
+            }
+			CUDCommonResponse result = commonCodeMainService.deleteAdminCommonCodeItem(param);
+			return ResponseEntity.ok(result);
+				
+			}catch(Exception e) {
+				 return ResponseEntity.status(500).body(new CUDCommonResponse<>(0, param.size(), null, "삭제 처리 중 오류가 발생했습니다."));
+			}
+		}	
 }

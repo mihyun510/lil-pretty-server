@@ -53,5 +53,8 @@ public class CommonCode extends BaseEntity{
 	@UpdateTimestamp
 	@Column(name = "upd_date")
 	private LocalDateTime updDate;
-		
+	
+	public void reorderDtCd(String newDtCd) {
+	    this.cmDtCd = newDtCd;
+	}
 }
