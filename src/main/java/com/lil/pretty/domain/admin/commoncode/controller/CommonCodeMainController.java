@@ -43,7 +43,7 @@ public class CommonCodeMainController {
 		try {
 			String grpNm = params.get("cmGrpNm");
 			List<CommonCodeDto> items = commonCodeMainService.getAdminCommonCodeItemsCodes(grpNm);
-			return ResponseEntity.ok(new CommonResponse(true, items, "저장이 완료되었습니다."));
+			return ResponseEntity.ok(new CommonResponse(true, items, "Success"));
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body(new CommonResponse(false, null, "Failed"));
 		}
