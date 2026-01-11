@@ -14,3 +14,4 @@ public class UserRes {
 		return new UserRes(UserData.fromEntity(user));
 	}
 }
+ 
