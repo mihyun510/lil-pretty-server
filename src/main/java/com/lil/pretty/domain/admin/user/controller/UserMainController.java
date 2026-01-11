@@ -2,26 +2,18 @@ package com.lil.pretty.domain.admin.user.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lil.pretty.config.security.auth.AuthDetail;
-import com.lil.pretty.config.security.auth.AuthDetailService;
-import com.lil.pretty.config.security.jwt.JwtTokenProvider;
 import com.lil.pretty.domain.admin.user.dto.UserMain;
 import com.lil.pretty.domain.admin.user.service.UserMainService;
 import com.lil.pretty.domain.common.dto.CUDCommonResponse;
 import com.lil.pretty.domain.common.dto.CommonResponse;
-import com.lil.pretty.domain.user.model.User;
-import com.lil.pretty.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 

@@ -19,6 +19,7 @@ public interface CommonCodeMainRepository extends JpaRepository<CommonCode,Commo
 	List<CommonCode> findBycmGrpCd(String cmGrpCd);
 	
 	void deleteByCmGrpCd(String cmGrpCd);
+	void deleteByCmGrpCdAndCmDtCd(String cmGrpCd,String dtCd);
 	
 	@Modifying
 	@Transactional
