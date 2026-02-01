@@ -1,6 +1,5 @@
 package com.lil.pretty.domain.admin.user.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lil.pretty.domain.admin.user.dto.UserMain;
+import com.lil.pretty.domain.admin.user.dto.UserModifyReq;
+import com.lil.pretty.domain.admin.user.dto.UserRes;
+import com.lil.pretty.domain.admin.user.dto.UserSaveReq;
 import com.lil.pretty.domain.admin.user.service.UserMainService;
 import com.lil.pretty.domain.common.dto.CUDCommonResponse;
 import com.lil.pretty.domain.common.dto.CommonResponse;
@@ -29,13 +30,14 @@ public class UserMainController {
 	
 		try{
 			String usId = request.get("usId");
-			List<Map<String,Object>> items = userMainService.getAdminUserItems(usId);
-			return ResponseEntity.ok(new CommonResponse(true, items, "Success"));
+			UserRes item = userMainService.getAdminUserItem(usId);
+			return ResponseEntity.ok(new CommonResponse(true, item, "Success"));
 		}
 		catch(Exception e) {
 			return ResponseEntity.status(401).body(new CommonResponse(false, null,"Failed"));
 		}
 	}
+	
 	//사용자 삭제
 	@PostMapping("/deleteAdminUserItems")
 	public ResponseEntity<CUDCommonResponse> deleteAdminUserItems(@RequestBody Map<String, String> request){
@@ -56,11 +58,11 @@ public class UserMainController {
 	}
 	//사용자 수정
 	@PostMapping("/updateAdminUserItems")
-	public ResponseEntity<CUDCommonResponse> updateAdminUserItems(@RequestBody UserMain userRequest){
+	public ResponseEntity<CUDCommonResponse> updateAdminUserItems(@RequestBody UserModifyReq userModifyReq){
 	
 		try{
-			
-			CUDCommonResponse result = userMainService.updateAdminUserItems(userRequest);
+			String usId = userModifyReq.getUs_id();
+			CUDCommonResponse result = userMainService.updateAdminUserItems(usId,userModifyReq);
 			return ResponseEntity.ok(new CUDCommonResponse<>(0, 0, result, "Success"));
 		}
 		catch(Exception e) {
@@ -69,10 +71,10 @@ public class UserMainController {
 	}
 	//사용자 추가
 		@PostMapping("/insertAdminUserItems")
-		public ResponseEntity<CUDCommonResponse> insertAdminUserItems(@RequestBody UserMain userRequest, @AuthenticationPrincipal(expression = "username") String userId){
+		public ResponseEntity<CUDCommonResponse> insertAdminUserItems(@RequestBody UserSaveReq userSaveReq, @AuthenticationPrincipal(expression = "username") String userId){
 		
 			try{
-				CUDCommonResponse result = userMainService.insertAdminUserItems(userRequest,userId);
+				CUDCommonResponse result = userMainService.insertAdminUserItems(userSaveReq);
 				return ResponseEntity.ok(new CUDCommonResponse<>(0, 0, result, "Success"));
 			}
 			catch(Exception e) {

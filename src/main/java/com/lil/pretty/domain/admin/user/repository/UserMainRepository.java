@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.lil.pretty.domain.admin.user.dto.UserMain;
+import com.lil.pretty.domain.admin.user.dto.UserSaveReq;
 import com.lil.pretty.domain.common.dto.CUDCommonResponse;
 import com.lil.pretty.domain.user.model.User;
 
@@ -40,7 +40,7 @@ public interface UserMainRepository extends CrudRepository <User, String> {
 	        + " , upd_user = :#{#userRequest.us_id} \n"
 
 	        + " WHERE us_id = :#{#userRequest.us_id}", nativeQuery = true) 
-	int updateAdminUserItems(@Param("userRequest") UserMain userRequest);
+	int updateAdminUserItems(@Param("userRequest") UserSaveReq userRequest);
 	
 	// 사용자 정보 추가
 	@Modifying
@@ -59,5 +59,5 @@ public interface UserMainRepository extends CrudRepository <User, String> {
 		    + " , in_date = NOW() \n"
 		    + " , in_user = :userId \n"
 		    + ")", nativeQuery = true)
-		int insertAdminUserItems(@Param("userRequest") UserMain userRequest , @Param("userId") String userId);
+		int insertAdminUserItems(@Param("userRequest") UserSaveReq userRequest , @Param("userId") String userId);
 }
